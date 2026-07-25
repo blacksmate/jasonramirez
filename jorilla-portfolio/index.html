@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jason Orilla — Full-Stack Developer & Systems Architect</title>
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+  <!-- Google Fonts: Inter + JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- Main stylesheet -->
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- ============================================================
+  HEADER
+  ============================================================ -->
+  <header>
+    <div class="container nav">
+      <a href="#home" class="logo">
+        <span class="logo-icon">JR</span>
+        Jason<span>.</span>
+      </a>
+      <button class="hamburger" id="hamburger" aria-label="Toggle navigation">
+        <i class="fas fa-bars"></i>
+      </button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#about">About</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#portfolio">Projects</a></li>
+        <li><a href="#contact" class="nav-cta">Let's Talk <i class="fas fa-arrow-right"></i></a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- ============================================================
+  HERO
+  ============================================================ -->
+  <section class="hero" id="home">
+    <div class="hero-grid-bg"></div>
+    <div class="hero-glow hero-glow--1"></div>
+    <div class="hero-glow hero-glow--2"></div>
+
+    <div class="container hero-grid">
+      <div class="hero-content">
+        <span class="hero-badge">
+          <i class="fas fa-code"></i> Available for new projects
+        </span>
+        <h1>
+          Full-Stack Developer &amp;<br />
+          <span class="highlight">Systems Architect</span>
+        </h1>
+        <p class="subhead">
+          I'm Jason — I architect and build functional, clean, and scalable web
+          applications from scratch. With a decade of experience across government
+          systems, education platforms, and enterprise tools, I bridge the gap between
+          complex backend logic and seamless user experiences.
+        </p>
+        <div class="hero-actions">
+          <a href="#portfolio" class="btn-primary">View Projects <i class="fas fa-arrow-right"></i></a>
+          <a href="#contact" class="btn-outline">Get in Touch</a>
+        </div>
+        <div class="hero-stats">
+          <div><span class="number">10+</span> <span class="label">Years Experience</span></div>
+          <div><span class="number">20+</span> <span class="label">Projects Delivered</span></div>
+          <div><span class="number">5+</span> <span class="label">Gov Systems</span></div>
+        </div>
+      </div>
+      <div class="hero-image">
+        <div class="hero-avatar-wrapper">
+          <div class="hero-avatar-ring"></div>
+          <div class="hero-avatar-glow"></div>
+          <div class="hero-avatar">
+            <img src="assets/profile.png" alt="Jason Orilla" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+  ABOUT
+  ============================================================ -->
+  <section class="about" id="about">
+    <div class="container">
+      <span class="section-tag"><i class="fas fa-user"></i> About Me</span>
+      <h2 class="section-title">Building clean web apps <span class="highlight">from scratch</span></h2>
+      <div class="about-grid">
+        <div class="about-text">
+          <p>
+            I'm a full-stack web developer and systems architect with a passion for
+            building functional, clean, and maintainable applications. My expertise spans
+            PHP, MySQL, JavaScript, and modern CSS frameworks — from database architecture
+            to pixel-perfect responsive interfaces.
+          </p>
+          <p>
+            I thrive at the intersection of code and public service. Whether it's a
+            government digital transformation, an education platform, or an internal
+            enterprise tool, I bring the same level of rigor, security, and user-centric
+            thinking to every project.
+          </p>
+          <p class="location"><i class="fas fa-map-pin"></i> Based in Pangasinan, Philippines</p>
+        </div>
+        <div class="about-highlights">
+          <h4><i class="fas fa-bolt"></i> Core Focus Areas</h4>
+          <ul>
+            <li><i class="fas fa-check-circle"></i> Government Systems &amp; Portals</li>
+            <li><i class="fas fa-check-circle"></i> Education &amp; Learning Platforms</li>
+            <li><i class="fas fa-check-circle"></i> Custom Web Applications</li>
+            <li><i class="fas fa-check-circle"></i> IT Infrastructure &amp; Support</li>
+          </ul>
+          <hr />
+          <h4><i class="fas fa-graduation-cap"></i> Education</h4>
+          <p><strong>Bachelor of Science in Information Technology</strong><br />STI College Dagupan City <span class="year">2012 – 2015</span></p>
+          <p><strong>Diploma in Information Technology</strong><br />STI Alaminos <span class="year">2010 – 2012</span></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+  EXPERIENCE
+  ============================================================ -->
+  <section class="experience" id="experience">
+    <div class="container">
+      <span class="section-tag"><i class="fas fa-briefcase"></i> Experience</span>
+      <h2 class="section-title">A decade of <span class="highlight">code &amp; public service</span></h2>
+      <div class="exp-timeline">
+        <div class="exp-item">
+          <div class="exp-left">Dec 2022 — Present</div>
+          <div class="exp-right">
+            <h3>Admin Aide III</h3>
+            <div class="role">Local Government Unit (LGU) Bani</div>
+            <ul>
+              <li>Maintains the official website of Bani, Pangasinan</li>
+              <li>Develops custom web applications to streamline municipal operations</li>
+              <li>Manages eGovPH platform transactions and digital services</li>
+              <li>Oversees municipal hardware and network infrastructure</li>
+            </ul>
+          </div>
+        </div>
+        <div class="exp-item">
+          <div class="exp-left">Jun 2015 — Present</div>
+          <div class="exp-right">
+            <h3>IT Instructor</h3>
+            <div class="role">STI Alaminos</div>
+            <ul>
+              <li>Teaches programming, database management, and responsive web design</li>
+              <li>Guides students through practical coding projects and debugging sessions</li>
+              <li>Develops curriculum and mentors aspiring developers</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+  SKILLS
+  ============================================================ -->
+  <section class="skills" id="skills">
+    <div class="container">
+      <span class="section-tag"><i class="fas fa-cog"></i> Skills &amp; Tech</span>
+      <h2 class="section-title">The stack behind <span class="highlight">the work</span></h2>
+      <div class="skills-grid">
+        <div class="skill-badge">
+          <i class="fab fa-js"></i>
+          <div class="info"><h4>JavaScript</h4><p>ES6+, React, Node</p></div>
+        </div>
+        <div class="skill-badge">
+          <i class="fab fa-php"></i>
+          <div class="info"><h4>PHP</h4><p>Laravel, custom builds</p></div>
+        </div>
+        <div class="skill-badge">
+          <i class="fab fa-java"></i>
+          <div class="info"><h4>Java</h4><p>Desktop &amp; backend</p></div>
+        </div>
+        <div class="skill-badge">
+          <i class="fab fa-python"></i>
+          <div class="info"><h4>Python</h4><p>Scripts &amp; automation</p></div>
+        </div>
+        <div class="skill-badge">
+          <i class="fas fa-database"></i>
+          <div class="info"><h4>MySQL</h4><p>Architecture &amp; phpMyAdmin</p></div>
+        </div>
+        <div class="skill-badge">
+          <i class="fas fa-server"></i>
+          <div class="info"><h4>Laragon</h4><p>Local dev environment</p></div>
+        </div>
+        <div class="skill-badge">
+          <i class="fab fa-html5"></i>
+          <div class="info"><h4>HTML5 / CSS3</h4><p>Responsive, Flex/Grid</p></div>
+        </div>
+        <div class="skill-badge">
+          <i class="fab fa-bootstrap"></i>
+          <div class="info"><h4>Bootstrap</h4><p>Rapid prototyping</p></div>
+        </div>
+        <div class="skill-badge">
+          <i class="fab fa-react"></i>
+          <div class="info"><h4>React</h4><p>Component-based UI</p></div>
+        </div>
+        <div class="skill-badge">
+          <i class="fab fa-figma"></i>
+          <div class="info"><h4>Figma</h4><p>Design &amp; prototyping</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+  SERVICES
+  ============================================================ -->
+  <section class="services" id="services">
+    <div class="container">
+      <span class="section-tag"><i class="fas fa-rocket"></i> Services</span>
+      <h2 class="section-title">What I can <span class="highlight">build for you</span></h2>
+      <div class="services-grid">
+        <div class="service-card">
+          <i class="fas fa-layer-group"></i>
+          <h4>Full-Stack Development</h4>
+          <p>Complete web applications — database architecture, backend logic, PHP systems, MySQL integration, and responsive frontends.</p>
+        </div>
+        <div class="service-card">
+          <i class="fas fa-paint-brush"></i>
+          <h4>Website Design &amp; Revamp</h4>
+          <p>Modern responsive websites, redesigns, performance optimization, and mobile‑first layouts.</p>
+        </div>
+        <div class="service-card">
+          <i class="fas fa-cogs"></i>
+          <h4>System Automation</h4>
+          <p>Tracking systems, government transaction platforms, applicant monitoring, and internal business tools.</p>
+        </div>
+        <div class="service-card">
+          <i class="fas fa-headset"></i>
+          <h4>IT Infrastructure</h4>
+          <p>Hardware troubleshooting, network maintenance, LAN setup, and office IT support.</p>
+        </div>
+        <div class="service-card">
+          <i class="fas fa-chalkboard-teacher"></i>
+          <h4>Technical Training</h4>
+          <p>Programming tutorials, web development workshops, database lessons, and computer literacy training.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+  PORTFOLIO — With Case Study Modals
+  ============================================================ -->
+  <section class="portfolio" id="portfolio">
+    <div class="container">
+      <span class="section-tag"><i class="fas fa-code-branch"></i> Portfolio</span>
+      <h2 class="section-title">Selected <span class="highlight">projects</span></h2>
+      <div class="portfolio-grid">
+
+        <!-- PROJECT 1: BANI SPEED -->
+        <div class="portfolio-item" data-project="bani-speed">
+          <span class="tag">Bani LGU 01</span>
+          <h4>Bani SPEED — Document Workflow</h4>
+          <div class="tech">PHP 8.0 · MySQL · AdminLTE3 · QR Code · RBAC</div>
+          <p>Production-ready municipal document tracking and workflow management system with RBAC, audit trails, bulk operations, and QR code integration.</p>
+          <div class="project-links">
+            <button class="case-btn" data-project="bani-speed">
+              <i class="fas fa-book-open"></i> Case Study
+            </button>
+            <a href="#" class="demo-link"><i class="fas fa-external-link-alt"></i> Demo</a>
+            <a href="#" class="github-link"><i class="fab fa-github"></i> Code</a>
+          </div>
+        </div>
+
+        <!-- PROJECT 2: SavorraPOS -->
+        <div class="portfolio-item" data-project="savorra-pos">
+          <span class="tag">Savorra 05</span>
+          <h4>SavorraPOS — Point of Sale</h4>
+          <div class="tech">PHP · LAN · POS · Inventory · Reports</div>
+          <p>LAN-based Point of Sale system for coffee shops — order management, payments, inventory tracking, sales reports, and staff administration.</p>
+          <div class="project-links">
+            <button class="case-btn" data-project="savorra-pos">
+              <i class="fas fa-book-open"></i> Case Study
+            </button>
+            <a href="#" class="demo-link"><i class="fas fa-external-link-alt"></i> Demo</a>
+            <a href="#" class="github-link"><i class="fab fa-github"></i> Code</a>
+          </div>
+        </div>
+
+        <!-- PROJECT 3: SILEG -->
+        <div class="portfolio-item" data-project="sileg">
+          <span class="tag">SILEG 04</span>
+          <h4>SILEG — Law Enforcement Portal</h4>
+          <div class="tech">PHP · MySQL · Auth · RBAC · AJAX</div>
+          <p>Secure role-based web portal for law enforcement fraternity — member registration, document verification, announcements, and certificate issuance.</p>
+          <div class="project-links">
+            <button class="case-btn" data-project="sileg">
+              <i class="fas fa-book-open"></i> Case Study
+            </button>
+            <a href="#" class="demo-link"><i class="fas fa-external-link-alt"></i> Demo</a>
+            <a href="#" class="github-link"><i class="fab fa-github"></i> Code</a>
+          </div>
+        </div>
+
+        <!-- PROJECT 4: Bolinao LMS -->
+        <div class="portfolio-item" data-project="bolinao-lms">
+          <span class="tag">Bolinao 02</span>
+          <h4>Bolinao Learning Management System</h4>
+          <div class="tech">PHP · MySQL · LMS · Education</div>
+          <p>Interactive educational platform for Grades 1–3 with enrollment, quizzes, automated grading, and a Tagalog-to-Ilocano translator.</p>
+          <div class="project-links">
+            <button class="case-btn" data-project="bolinao-lms">
+              <i class="fas fa-book-open"></i> Case Study
+            </button>
+          </div>
+        </div>
+
+        <!-- PROJECT 5: SPES Alaminos -->
+        <div class="portfolio-item" data-project="spes">
+          <span class="tag">SPES 01</span>
+          <h4>SPES Alaminos Web Management</h4>
+          <div class="tech">PHP · MySQL · Email Automation</div>
+          <p>Tracking system for Special Program for the Employment of Students (SPES) applicants with automated email notifications when applicants are hired.</p>
+          <div class="project-links">
+            <button class="case-btn" data-project="spes">
+              <i class="fas fa-book-open"></i> Case Study
+            </button>
+          </div>
+        </div>
+
+        <!-- PROJECT 6: STI Time-in / Time-out -->
+        <div class="portfolio-item" data-project="sti-time">
+          <span class="tag">STI 03</span>
+          <h4>STI Time-in / Time-out System</h4>
+          <div class="tech">PHP · MySQL · Attendance</div>
+          <p>Digital attendance monitoring system that records and manages student and employee attendance logs in real-time.</p>
+          <div class="project-links">
+            <button class="case-btn" data-project="sti-time">
+              <i class="fas fa-book-open"></i> Case Study
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+  CASE STUDY MODAL (Hidden by default)
+  ============================================================ -->
+  <div class="modal-overlay" id="caseModal">
+    <div class="modal-container">
+      <button class="modal-close" id="modalClose">
+        <i class="fas fa-times"></i>
+      </button>
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <div class="modal-tags">
+          <span class="modal-tag" id="modalProjectTag">Bani LGU 01</span>
+          <span class="modal-status">Case Study</span>
+        </div>
+        <h2 id="modalProjectTitle">Bani SPEED — Document Workflow System</h2>
+        <div class="modal-tech" id="modalProjectTech">PHP 8.0 · MySQL · AdminLTE3 · QR Code · RBAC</div>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="modal-body">
+
+        <!-- Gallery Section -->
+        <div class="modal-gallery">
+          <div class="gallery-main">
+            <img id="galleryMainImg" src="assets/projects/bani-speed/dashboard.png" alt="Project screenshot" />
+            <button class="gallery-nav gallery-prev" id="galleryPrev">
+              <i class="fas fa-chevron-left"></i>
+            </button>
+            <button class="gallery-nav gallery-next" id="galleryNext">
+              <i class="fas fa-chevron-right"></i>
+            </button>
+          </div>
+          <div class="gallery-thumbs" id="galleryThumbs">
+            <!-- Thumbnails will be dynamically generated -->
+          </div>
+        </div>
+
+        <!-- Case Study Content -->
+        <div class="modal-content" id="modalContent">
+          <!-- Dynamically loaded from JavaScript -->
+        </div>
+
+        <!-- Project Links -->
+        <div class="modal-links">
+          <a href="#" class="btn-primary" id="modalDemoLink">
+            <i class="fas fa-external-link-alt"></i> Live Demo
+          </a>
+          <a href="#" class="btn-outline" id="modalGitHubLink">
+            <i class="fab fa-github"></i> View Code
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+  CONTACT
+  ============================================================ -->
+  <section class="contact" id="contact">
+    <div class="container">
+      <span class="section-tag"><i class="fas fa-paper-plane"></i> Contact</span>
+      <h2 class="section-title">Have a project <span class="highlight">in mind?</span></h2>
+      <p class="section-subtitle">Let's build it together. Whether you need a custom web app, a website revamp, or IT infrastructure support, I'd love to hear about it.</p>
+      <div class="contact-wrapper">
+        <div class="contact-text">
+          <p><i class="fas fa-map-pin"></i> Based in Pangasinan, Philippines</p>
+          <a href="mailto:jason@jorilla.dev" class="contact-item"><i class="fas fa-envelope"></i> jason@jorilla.dev</a>
+          <a href="tel:+639123456789" class="contact-item"><i class="fas fa-phone-alt"></i> +63 912 345 6789</a>
+          <a href="#" class="contact-item"><i class="fab fa-github"></i> github.com/jorilla-dev</a>
+          <a href="#" class="contact-item"><i class="fab fa-linkedin"></i> linkedin.com/in/jorilla-dev</a>
+        </div>
+        <form class="contact-form" id="contactForm" action="https://formspree.io/f/xwvgwvjw" method="POST">
+          <label for="name">Full name</label>
+          <input type="text" id="name" name="name" placeholder="Your name" required />
+          <label for="email">Email address</label>
+          <input type="email" id="email" name="email" placeholder="you@example.com" required />
+          <label for="message">Message</label>
+          <textarea id="message" name="message" placeholder="Tell me about your project…" required></textarea>
+          <button type="submit" class="btn-primary"><i class="fas fa-paper-plane"></i> Send message</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+  FOOTER
+  ============================================================ -->
+  <footer>
+    <div class="container">
+      <div class="socials">
+        <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+        <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+      </div>
+      <p>&copy; 2026 Jason Orilla Ramirez — Full-Stack Developer &amp; Systems Architect</p>
+      <p class="footer-code"><span>&lt;</span> built with <span>❤</span> and <span>☕</span> <span>/&gt;</span></p>
+    </div>
+  </footer>
+
+  <!-- JavaScript -->
+  <script src="js/script.js"></script>
+</body>
+</html>
