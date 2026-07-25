@@ -20,10 +20,74 @@ document.querySelectorAll('.nav-links a').forEach(link => {
   });
 });
 
-// ----- Contact form (demo) -----
+// ============================================================
+// CONTACT FORM (Formspree with custom notification)
+// ============================================================
+
 const form = document.getElementById('contactForm');
 
-form.addEventListener('submit', (e) => {
+// --- Custom Notification System ---
+function showNotification(type, title, message) {
+  // Remove any existing notification
+  const existing = document.querySelector('.notification-overlay');
+  if (existing) existing.remove();
+
+  const overlay = document.createElement('div');
+  overlay.className = 'notification-overlay active';
+
+  const iconClass = type === 'success' ? 'success' : 'error';
+  const iconHtml = type === 'success'
+    ? '<i class="fas fa-check-circle"></i>'
+    : '<i class="fas fa-exclamation-circle"></i>';
+
+  const buttonHtml = type === 'success'
+    ? `<button class="btn-primary" onclick="this.closest('.notification-overlay').remove()">Got it</button>`
+    : `
+        <button class="btn-primary" onclick="this.closest('.notification-overlay').remove()">Got it</button>
+        <button class="btn-secondary" onclick="this.closest('.notification-overlay').remove()">Close</button>
+      `;
+
+  overlay.innerHTML = `
+    <div class="notification-modal">
+      <div class="notification-icon ${iconClass}">
+        ${iconHtml}
+      </div>
+      <h3>${title}</h3>
+      <p>${message}</p>
+      <div class="notification-actions">
+        ${buttonHtml}
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(overlay);
+
+  // Auto-close success after 4 seconds
+  if (type === 'success') {
+    setTimeout(() => {
+      if (overlay && overlay.parentNode) {
+        overlay.remove();
+      }
+    }, 4000);
+  }
+
+  // Click outside to close
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) overlay.remove();
+  });
+
+  // ESC key to close
+  const escHandler = (e) => {
+    if (e.key === 'Escape' && overlay.parentNode) {
+      overlay.remove();
+      document.removeEventListener('keydown', escHandler);
+    }
+  };
+  document.addEventListener('keydown', escHandler);
+}
+
+// --- Form submit handler ---
+form.addEventListener('submit', async (e) => {
   e.preventDefault();
 
   const name = document.getElementById('name').value.trim();
@@ -31,28 +95,58 @@ form.addEventListener('submit', (e) => {
   const message = document.getElementById('message').value.trim();
 
   if (!name || !email || !message) {
-    alert('Please fill in all fields.');
+    showNotification('error', 'Missing Fields', 'Please fill in all fields before submitting.');
     return;
   }
 
   if (!email.includes('@') || !email.includes('.')) {
-    alert('Please enter a valid email address.');
+    showNotification('error', 'Invalid Email', 'Please enter a valid email address.');
     return;
   }
 
-  alert(`Thanks, ${name}! Your message has been sent. I'll get back to you soon.`);
-  form.reset();
+  const submitBtn = form.querySelector('.btn-primary');
+  const originalText = submitBtn.innerHTML;
+  submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+  submitBtn.disabled = true;
+
+  try {
+    const response = await fetch('https://formspree.io/f/xwvgwvjw', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({ name, email, message })
+    });
+
+    if (response.ok) {
+      showNotification(
+        'success',
+        `✅ Thanks, ${name}!`,
+        'Your message has been sent successfully. I\'ll get back to you soon.'
+      );
+      form.reset();
+    } else {
+      const result = await response.json();
+      showNotification('error', 'Submission Failed', result.error || 'Something went wrong. Please try again.');
+    }
+  } catch (error) {
+    showNotification('error', 'Network Error', 'Please check your internet connection and try again.');
+  } finally {
+    submitBtn.innerHTML = originalText;
+    submitBtn.disabled = false;
+  }
 });
 
 // ============================================================
 // CASE STUDY MODAL SYSTEM
 // ============================================================
 
-// --- Placeholder SVG (no external file needed) ---
+// --- Placeholder SVG ---
 const PLACEHOLDER_SVG =
   "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='450' viewBox='0 0 800 450'%3E%3Crect width='100%25' height='100%25' fill='%230F172A'/%3E%3Ccircle cx='400' cy='180' r='50' fill='%232563EB' opacity='0.12'/%3E%3Ctext x='400' y='190' font-family='Arial' font-size='48' fill='%232563EB' text-anchor='middle' dy='.3em'%3E%3C/text%3E%3Ctext x='400' y='240' font-family='Arial' font-size='18' fill='%2394A3B8' text-anchor='middle'%3ENo screenshots available%3C/text%3E%3Ctext x='400' y='268' font-family='Arial' font-size='13' fill='%2364748B' text-anchor='middle'%3EScreenshots coming soon%3C/text%3E%3C/svg%3E";
 
-// --- Project Data ---
+// --- Project Data with Full Case Study Content ---
 const projectData = {
   'bani-speed': {
     title: 'Bani SPEED — Municipal Document Workflow System',
@@ -359,10 +453,227 @@ let currentProject = null;
 let currentImageIndex = 0;
 let projectImages = [];
 
-// --- Helper: Handle image errors gracefully ---
+// --- LIGHTBOX (Full-screen image viewer) ---
+let lightbox = null;
+let lightboxImg = null;
+let lightboxClose = null;
+let lightboxPrev = null;
+let lightboxNext = null;
+
+function createLightbox() {
+  if (document.getElementById('lightbox')) return;
+
+  lightbox = document.createElement('div');
+  lightbox.id = 'lightbox';
+  lightbox.className = 'lightbox-overlay';
+  lightbox.style.cssText = `
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.92);
+    backdrop-filter: blur(20px);
+    z-index: 9999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  `;
+
+  lightboxClose = document.createElement('button');
+  lightboxClose.className = 'lightbox-close';
+  lightboxClose.innerHTML = '<i class="fas fa-times"></i>';
+  lightboxClose.style.cssText = `
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 2.2rem;
+    cursor: pointer;
+    z-index: 10;
+    transition: transform 0.2s, opacity 0.2s;
+    opacity: 0.7;
+    padding: 10px;
+  `;
+  lightboxClose.onmouseenter = () => { lightboxClose.style.opacity = '1'; lightboxClose.style.transform = 'scale(1.1)'; };
+  lightboxClose.onmouseleave = () => { lightboxClose.style.opacity = '0.7'; lightboxClose.style.transform = 'scale(1)'; };
+  lightboxClose.onclick = closeLightbox;
+
+  lightboxImg = document.createElement('img');
+  lightboxImg.className = 'lightbox-image';
+  lightboxImg.style.cssText = `
+    max-width: 95vw;
+    max-height: 85vh;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s ease;
+    cursor: default;
+  `;
+
+  lightboxPrev = document.createElement('button');
+  lightboxPrev.className = 'lightbox-nav lightbox-prev';
+  lightboxPrev.innerHTML = '<i class="fas fa-chevron-left"></i>';
+  lightboxPrev.style.cssText = `
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.4rem;
+    transition: background 0.2s, transform 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(8px);
+  `;
+  lightboxPrev.onmouseenter = () => { lightboxPrev.style.background = 'rgba(56, 189, 248, 0.2)'; };
+  lightboxPrev.onmouseleave = () => { lightboxPrev.style.background = 'rgba(255, 255, 255, 0.08)'; };
+  lightboxPrev.onclick = (e) => { e.stopPropagation(); lightboxPrevImage(); };
+
+  lightboxNext = document.createElement('button');
+  lightboxNext.className = 'lightbox-nav lightbox-next';
+  lightboxNext.innerHTML = '<i class="fas fa-chevron-right"></i>';
+  lightboxNext.style.cssText = `
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.4rem;
+    transition: background 0.2s, transform 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(8px);
+  `;
+  lightboxNext.onmouseenter = () => { lightboxNext.style.background = 'rgba(56, 189, 248, 0.2)'; };
+  lightboxNext.onmouseleave = () => { lightboxNext.style.background = 'rgba(255, 255, 255, 0.08)'; };
+  lightboxNext.onclick = (e) => { e.stopPropagation(); lightboxNextImage(); };
+
+  const counter = document.createElement('div');
+  counter.className = 'lightbox-counter';
+  counter.id = 'lightboxCounter';
+  counter.style.cssText = `
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.9rem;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.04em;
+  `;
+
+  lightbox.onclick = (e) => {
+    if (e.target === lightbox) closeLightbox();
+  };
+
+  document.addEventListener('keydown', (e) => {
+    if (lightbox && lightbox.style.display === 'flex') {
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowRight') lightboxNextImage();
+      if (e.key === 'ArrowLeft') lightboxPrevImage();
+    }
+  });
+
+  let touchStartX = 0;
+  let touchEndX = 0;
+  lightbox.addEventListener('touchstart', (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+  }, { passive: true });
+  lightbox.addEventListener('touchend', (e) => {
+    touchEndX = e.changedTouches[0].screenX;
+    const diff = touchStartX - touchEndX;
+    if (Math.abs(diff) > 50) {
+      if (diff > 0) lightboxNextImage();
+      else lightboxPrevImage();
+    }
+  }, { passive: true });
+
+  lightbox.appendChild(lightboxClose);
+  lightbox.appendChild(lightboxImg);
+  lightbox.appendChild(lightboxPrev);
+  lightbox.appendChild(lightboxNext);
+  lightbox.appendChild(counter);
+  document.body.appendChild(lightbox);
+}
+
+function openLightbox(index) {
+  if (!lightbox) createLightbox();
+  if (!projectImages || projectImages.length === 0) return;
+
+  const imgPath = `assets/projects/${currentProject}/${projectImages[index]}`;
+  lightboxImg.src = imgPath;
+  lightboxImg.alt = `${currentProject} screenshot ${index + 1}`;
+  lightboxImg.onerror = function() {
+    this.src = PLACEHOLDER_SVG;
+    this.style.objectFit = 'contain';
+  };
+
+  const counter = document.getElementById('lightboxCounter');
+  if (counter) {
+    counter.textContent = `${index + 1} / ${projectImages.length}`;
+  }
+
+  if (projectImages.length <= 1) {
+    lightboxPrev.style.display = 'none';
+    lightboxNext.style.display = 'none';
+  } else {
+    lightboxPrev.style.display = 'flex';
+    lightboxNext.style.display = 'flex';
+  }
+
+  lightbox._currentIndex = index;
+  lightbox.style.display = 'flex';
+  void lightbox.offsetWidth;
+  lightbox.style.opacity = '1';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+  if (!lightbox) return;
+  lightbox.style.opacity = '0';
+  setTimeout(() => {
+    lightbox.style.display = 'none';
+    document.body.style.overflow = '';
+  }, 300);
+}
+
+function lightboxNextImage() {
+  if (!projectImages || projectImages.length === 0) return;
+  const current = lightbox._currentIndex || 0;
+  const next = (current + 1) % projectImages.length;
+  openLightbox(next);
+}
+
+function lightboxPrevImage() {
+  if (!projectImages || projectImages.length === 0) return;
+  const current = lightbox._currentIndex || 0;
+  const prev = (current - 1 + projectImages.length) % projectImages.length;
+  openLightbox(prev);
+}
+
+// --- Helper Functions ---
 function handleImageError(img) {
   if (!img) return;
-  // Only replace if it's not already a placeholder
   if (!img.src.includes('placeholder') && !img.src.includes('svg')) {
     img.src = PLACEHOLDER_SVG;
     img.alt = 'Image not available';
@@ -371,7 +682,6 @@ function handleImageError(img) {
   }
 }
 
-// --- Helper: Create placeholder element ---
 function createPlaceholderElement() {
   const placeholder = document.createElement('div');
   placeholder.className = 'gallery-placeholder';
@@ -401,22 +711,15 @@ function openModal(projectId) {
   projectImages = data.images || [];
   currentImageIndex = 0;
 
-  // Set header
   modalProjectTag.textContent = data.tag;
   modalProjectTitle.textContent = data.title;
   modalProjectTech.textContent = data.tech;
-
-  // Set case study content
   modalContent.innerHTML = data.caseStudy;
-
-  // Set links
   modalDemoLink.href = data.demoLink || '#';
   modalGitHubLink.href = data.githubLink || '#';
 
-  // Render gallery
   renderGallery();
 
-  // Show modal
   modal.classList.add('active');
   document.body.style.overflow = 'hidden';
 }
@@ -425,54 +728,89 @@ function openModal(projectId) {
 function closeModal() {
   modal.classList.remove('active');
   document.body.style.overflow = '';
+  if (lightbox && lightbox.style.display === 'flex') {
+    closeLightbox();
+  }
 }
 
 modalClose.addEventListener('click', closeModal);
-
 modal.addEventListener('click', (e) => {
   if (e.target === modal) closeModal();
 });
-
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') closeModal();
 });
 
 // --- Gallery Functions ---
+let mainImageHandler = null;
+
+function handleMainImageClick(e) {
+  e.preventDefault();
+  e.stopPropagation();
+  if (projectImages && projectImages.length > 0) {
+    openLightbox(currentImageIndex);
+  }
+}
+
+function attachMainImageListener() {
+  if (mainImageHandler) {
+    galleryMainImg.removeEventListener('click', mainImageHandler);
+    galleryMainImg.removeEventListener('touchstart', mainImageHandler);
+    mainImageHandler = null;
+  }
+  galleryMainImg.addEventListener('click', handleMainImageClick);
+  galleryMainImg.addEventListener('touchstart', handleMainImageClick, { passive: false });
+  mainImageHandler = handleMainImageClick;
+}
+
 function renderGallery() {
   galleryThumbs.innerHTML = '';
 
-  // Remove any existing placeholder
-  const existingPlaceholder = document.querySelector('.gallery-placeholder');
-  if (existingPlaceholder) existingPlaceholder.remove();
+  document.querySelectorAll('.image-tap-indicator, .image-count-badge, .image-tap-center, .gallery-placeholder')
+    .forEach(el => el.remove());
 
-  // If no images, show placeholder with nice UI
   if (!projectImages || projectImages.length === 0) {
     galleryMainImg.style.display = 'none';
     galleryPrev.style.display = 'none';
     galleryNext.style.display = 'none';
-
-    // Add placeholder
     const placeholder = createPlaceholderElement();
     galleryMainImg.parentElement.appendChild(placeholder);
+    if (mainImageHandler) {
+      galleryMainImg.removeEventListener('click', mainImageHandler);
+      galleryMainImg.removeEventListener('touchstart', mainImageHandler);
+      mainImageHandler = null;
+    }
     return;
   }
 
-  // Hide placeholder if exists, show image
   galleryMainImg.style.display = 'block';
   galleryPrev.style.display = 'flex';
   galleryNext.style.display = 'flex';
 
-  // Set main image with error handling
   const firstImgPath = `assets/projects/${currentProject}/${projectImages[0]}`;
   galleryMainImg.src = firstImgPath;
   galleryMainImg.alt = `${currentProject} screenshot 1`;
   galleryMainImg.style.objectFit = 'cover';
   galleryMainImg.style.padding = '0';
-  galleryMainImg.onerror = function() {
-    handleImageError(this);
-  };
+  galleryMainImg.style.cursor = 'pointer';
+  galleryMainImg.style.touchAction = 'manipulation';
+  galleryMainImg.onerror = function() { handleImageError(this); };
+  galleryMainImg.title = 'Click to view full size';
 
-  // Create thumbnails
+  const indicator = document.createElement('div');
+  indicator.className = 'image-tap-indicator';
+  const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+  const label = isTouch ? 'Tap to expand' : 'Click to expand';
+  indicator.innerHTML = `<i class="fas fa-expand"></i> ${label}`;
+  galleryMainImg.parentElement.appendChild(indicator);
+
+  const countBadge = document.createElement('div');
+  countBadge.className = 'image-count-badge';
+  countBadge.textContent = `📷 ${projectImages.length}`;
+  galleryMainImg.parentElement.appendChild(countBadge);
+
+  attachMainImageListener();
+
   projectImages.forEach((img, index) => {
     const thumb = document.createElement('div');
     thumb.className = `thumb-item ${index === 0 ? 'active' : ''}`;
@@ -480,14 +818,15 @@ function renderGallery() {
     thumb.innerHTML = `<img src="${imgPath}" alt="Thumbnail ${index + 1}" />`;
     const thumbImg = thumb.querySelector('img');
     thumbImg.onerror = function() {
-      // Replace broken thumbnail with placeholder
       this.src = PLACEHOLDER_SVG;
       this.style.objectFit = 'contain';
       this.style.padding = '2px';
     };
-    thumb.addEventListener('click', () => {
+    thumb.addEventListener('click', () => setImage(index));
+    thumb.addEventListener('touchstart', (e) => {
+      e.preventDefault();
       setImage(index);
-    });
+    }, { passive: false });
     galleryThumbs.appendChild(thumb);
   });
 }
@@ -500,16 +839,21 @@ function setImage(index) {
   galleryMainImg.alt = `${currentProject} screenshot ${index + 1}`;
   galleryMainImg.style.objectFit = 'cover';
   galleryMainImg.style.padding = '0';
-  galleryMainImg.onerror = function() {
-    handleImageError(this);
-  };
+  galleryMainImg.style.cursor = 'pointer';
+  galleryMainImg.style.touchAction = 'manipulation';
+  galleryMainImg.onerror = function() { handleImageError(this); };
 
-  // Update active thumbnail
+  if (!mainImageHandler) {
+    attachMainImageListener();
+  }
+
+  const countBadge = document.querySelector('.image-count-badge');
+  if (countBadge) countBadge.textContent = `📷 ${projectImages.length}`;
+
   document.querySelectorAll('.thumb-item').forEach((thumb, i) => {
     thumb.classList.toggle('active', i === index);
   });
 
-  // Scroll thumb into view
   const thumbElements = document.querySelectorAll('.thumb-item');
   if (thumbElements[index]) {
     thumbElements[index].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
@@ -531,9 +875,11 @@ function prevImage() {
 galleryNext.addEventListener('click', nextImage);
 galleryPrev.addEventListener('click', prevImage);
 
-// Keyboard navigation for gallery
 document.addEventListener('keydown', (e) => {
   if (!modal.classList.contains('active')) return;
   if (e.key === 'ArrowRight') nextImage();
   if (e.key === 'ArrowLeft') prevImage();
 });
+
+// --- Initialize ---
+createLightbox();
