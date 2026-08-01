@@ -146,7 +146,7 @@ form.addEventListener('submit', async (e) => {
 const PLACEHOLDER_SVG =
   "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='450' viewBox='0 0 800 450'%3E%3Crect width='100%25' height='100%25' fill='%230F172A'/%3E%3Ccircle cx='400' cy='180' r='50' fill='%232563EB' opacity='0.12'/%3E%3Ctext x='400' y='190' font-family='Arial' font-size='48' fill='%232563EB' text-anchor='middle' dy='.3em'%3E%3C/text%3E%3Ctext x='400' y='240' font-family='Arial' font-size='18' fill='%2394A3B8' text-anchor='middle'%3ENo screenshots available%3C/text%3E%3Ctext x='400' y='268' font-family='Arial' font-size='13' fill='%2364748B' text-anchor='middle'%3EScreenshots coming soon%3C/text%3E%3C/svg%3E";
 
-// --- Project Data with Full Case Study Content ---
+// --- Project Data with Full Case Study Content (No githubLink/demoLink) ---
 const projectData = {
   'bani-speed': {
     title: 'Bani SPEED — Municipal Document Workflow System',
@@ -160,8 +160,6 @@ const projectData = {
       'qr.png',
       'send-docs.png'
     ],
-    demoLink: '#',
-    githubLink: '#',
     caseStudy: `
       <h3><i class="fas fa-bullseye"></i> The Problem</h3>
       <p>The Municipality of Bani struggled with manual paper-based document processing:</p>
@@ -221,8 +219,6 @@ const projectData = {
       'sales-history.png',
       'login.png'
     ],
-    demoLink: '#',
-    githubLink: '#',
     caseStudy: `
       <h3><i class="fas fa-bullseye"></i> The Problem</h3>
       <p>A local coffee shop needed a comprehensive Point of Sale system but faced challenges:</p>
@@ -279,8 +275,6 @@ const projectData = {
       'user-dashboard.png',
       'admin-dashboard.png'
     ],
-    demoLink: '#',
-    githubLink: '#',
     caseStudy: `
       <h3><i class="fas fa-bullseye"></i> The Problem</h3>
       <p>The Samahang Ilokano Law Enforces Group (SILEG), a Filipino law enforcement fraternity, managed their member operations manually:</p>
@@ -333,8 +327,6 @@ const projectData = {
     tag: 'Bolinao 02',
     tech: 'PHP · MySQL · LMS · Education',
     images: [],
-    demoLink: '#',
-    githubLink: '#',
     caseStudy: `
       <h3><i class="fas fa-bullseye"></i> The Problem</h3>
       <p>An educational institution needed a digital platform to manage learning for Grades 1-3 students.</p>
@@ -369,8 +361,6 @@ const projectData = {
     tag: 'SPES 01',
     tech: 'PHP · MySQL · Email Automation',
     images: [],
-    demoLink: '#',
-    githubLink: '#',
     caseStudy: `
       <h3><i class="fas fa-bullseye"></i> The Problem</h3>
       <p>The Special Program for the Employment of Students (SPES) needed a digital tracking system for student applicants.</p>
@@ -404,8 +394,6 @@ const projectData = {
     tag: 'STI 03',
     tech: 'PHP · MySQL · Attendance',
     images: [],
-    demoLink: '#',
-    githubLink: '#',
     caseStudy: `
       <h3><i class="fas fa-bullseye"></i> The Problem</h3>
       <p>STI Alaminos needed a digital attendance monitoring system for students and employees.</p>
@@ -442,8 +430,6 @@ const modalProjectTag = document.getElementById('modalProjectTag');
 const modalProjectTitle = document.getElementById('modalProjectTitle');
 const modalProjectTech = document.getElementById('modalProjectTech');
 const modalContent = document.getElementById('modalContent');
-const modalDemoLink = document.getElementById('modalDemoLink');
-const modalGitHubLink = document.getElementById('modalGitHubLink');
 const galleryMainImg = document.getElementById('galleryMainImg');
 const galleryThumbs = document.getElementById('galleryThumbs');
 const galleryPrev = document.getElementById('galleryPrev');
@@ -715,8 +701,6 @@ function openModal(projectId) {
   modalProjectTitle.textContent = data.title;
   modalProjectTech.textContent = data.tech;
   modalContent.innerHTML = data.caseStudy;
-  modalDemoLink.href = data.demoLink || '#';
-  modalGitHubLink.href = data.githubLink || '#';
 
   renderGallery();
 
